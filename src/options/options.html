@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Outreach Assistant — Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>LinkedIn Outreach Assistant</h1>
+      <p class="subtitle">Set up your context once — every message will reflect it.</p>
+    </header>
+
+    <!-- API Key -->
+    <section class="card" id="section-api">
+      <h2>API Configuration</h2>
+      <div class="field">
+        <label for="api-key">Claude API Key</label>
+        <p class="hint">
+          Get yours at <a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com</a>.
+          Stored locally on this device only.
+        </p>
+        <div class="input-row">
+          <input
+            type="password"
+            id="api-key"
+            placeholder="sk-ant-api03-…"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="validate-btn" class="btn-secondary">Validate</button>
+        </div>
+        <div id="api-status" class="status-msg"></div>
+      </div>
+    </section>
+
+    <!-- Your Context -->
+    <section class="card" id="section-context">
+      <h2>Your Context</h2>
+
+      <div class="field">
+        <div class="label-row">
+          <label for="resume">Resume / Work History</label>
+          <button class="btn-upload" id="upload-btn" title="Upload .pdf or .txt">
+            Upload file
+          </button>
+          <input type="file" id="resume-file" accept=".pdf,.txt" hidden>
+        </div>
+        <p class="hint">Paste your background or upload a PDF / .txt file — Claude will extract the key details. (2000 char max)</p>
+        <div id="upload-status" class="status-msg"></div>
+        <textarea id="resume" rows="6" maxlength="2000" placeholder="Senior PM with 8 years building B2B SaaS products. Previously at Acme (Series B) and BigCo. Strong in 0→1 product work, healthtech domain, and cross-functional leadership…"></textarea>
+        <div class="char-count" id="resume-count">0 / 2000</div>
+      </div>
+
+      <div class="field">
+        <label for="pitch">Current Focus / Pitch</label>
+        <p class="hint">What are you looking for right now? This anchors every message to your current goal.</p>
+        <textarea id="pitch" rows="3" maxlength="400" placeholder="Looking for PM or Head of Product roles at early-stage healthtech companies (seed–Series B). Open to fractional engagements. Not looking at big tech."></textarea>
+        <div class="char-count" id="pitch-count">0 / 400</div>
+      </div>
+
+      <div class="field">
+        <label for="voice-samples">Voice / Writing Samples</label>
+        <p class="hint">Paste 2–5 messages you've written that felt authentic and got good responses. Separate them with a blank line.</p>
+        <textarea id="voice-samples" rows="8" maxlength="3000" placeholder="Hey Alex — saw your talk at SaaStr on PLG metrics. The bit about activation vs adoption resonated a lot with work I did at Acme. Would love to compare notes on how you measure…
+
+---
+
+Hi Jordan, your recent post on AI in clinical workflows caught my eye…"></textarea>
+        <div class="char-count" id="voice-count">0 / 3000</div>
+      </div>
+    </section>
+
+    <!-- Portfolio & Links -->
+    <section class="card" id="section-portfolio">
+      <h2>Portfolio &amp; Links</h2>
+
+      <div class="field">
+        <label>URLs to scrape</label>
+        <p class="hint">Paste a GitHub profile, personal site, or portfolio URL — the extension will fetch it and summarize the relevant work into your context.</p>
+        <div class="url-list" id="url-list">
+          <div class="url-row">
+            <input type="url" class="url-input" placeholder="https://github.com/username or https://yourportfolio.com">
+            <button class="btn-fetch">Fetch</button>
+          </div>
+          <div class="url-row">
+            <input type="url" class="url-input" placeholder="https://…">
+            <button class="btn-fetch">Fetch</button>
+          </div>
+          <div class="url-row">
+            <input type="url" class="url-input" placeholder="https://…">
+            <button class="btn-fetch">Fetch</button>
+          </div>
+        </div>
+        <div id="fetch-status" class="status-msg"></div>
+      </div>
+
+      <div class="field">
+        <label for="portfolio">Extracted Portfolio Summary</label>
+        <p class="hint">Auto-filled when you fetch a URL — edit freely. Included in every message prompt. (1500 char max)</p>
+        <textarea id="portfolio" rows="5" maxlength="1500" placeholder="Portfolio summary will appear here after fetching a URL, or paste your own…"></textarea>
+        <div class="char-count" id="portfolio-count">0 / 1500</div>
+      </div>
+    </section>
+
+    <!-- Company Context -->
+    <section class="card" id="section-company">
+      <h2>Company Context <span class="optional">(optional, per-session)</span></h2>
+
+      <div class="field">
+        <label for="company-context">Company / Product Description</label>
+        <p class="hint">Briefly describe your company or product if you're reaching out on behalf of one. Claude will weave this into the message naturally.</p>
+        <textarea id="company-context" rows="3" maxlength="600" placeholder="We're building AI-powered prior auth software for health systems. Series A, 30 people, backed by a16z bio. Looking to hire a founding PM."></textarea>
+        <div class="char-count" id="company-count">0 / 600</div>
+      </div>
+    </section>
+
+    <!-- Defaults -->
+    <section class="card" id="section-defaults">
+      <h2>Message Defaults</h2>
+
+      <div class="field field-row">
+        <div>
+          <label for="tone-default">Default Tone</label>
+          <select id="tone-default">
+            <option value="warm">Warm &amp; Direct</option>
+            <option value="formal">Formal</option>
+            <option value="peer">Peer-to-Peer</option>
+          </select>
+        </div>
+        <div>
+          <label for="length-default">Default Length</label>
+          <select id="length-default">
+            <option value="short">Short (&lt;150 chars)</option>
+            <option value="medium" selected>Medium (InMail)</option>
+            <option value="long">Long (Cold Email)</option>
+          </select>
+        </div>
+        <div>
+          <label for="draft-count">Drafts per Generation</label>
+          <select id="draft-count">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Save bar -->
+    <div class="save-bar">
+      <button id="save-btn" class="btn-primary">Save Settings</button>
+      <span id="save-status" class="save-status"></span>
+    </div>
+  </div>
+
+  <script src="../../dist/options.js"></script>
+</body>
+</html>

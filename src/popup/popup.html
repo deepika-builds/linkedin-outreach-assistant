@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LinkedIn Outreach Assistant</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <div class="brand">
+      <span class="brand-icon">✦</span>
+      <span class="brand-name">Outreach Assistant</span>
+    </div>
+
+    <div class="status-row" id="status-row">
+      <div class="status-dot" id="status-dot"></div>
+      <span class="status-text" id="status-text">Checking…</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="open-settings">Settings</button>
+      <button class="btn-secondary" id="open-linkedin" title="Open LinkedIn in a new tab">Open LinkedIn</button>
+    </div>
+
+    <p class="tip" id="tip"></p>
+  </div>
+
+  <script src="../../dist/popup.js"></script>
+</body>
+</html>
